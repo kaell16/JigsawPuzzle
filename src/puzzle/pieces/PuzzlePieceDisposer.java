@@ -253,8 +253,6 @@ public class PuzzlePieceDisposer implements Storeable {
 				}
 				puzzlePiece.restore(piece);
 				this.addPuzzleStueck(puzzlePiece);
-			} else {
-				;
 			}
 		}
 	}
