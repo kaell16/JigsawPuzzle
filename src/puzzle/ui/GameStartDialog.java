@@ -423,7 +423,7 @@ public class GameStartDialog extends JDialog {
 	}
 
 	private void initDialog() {
-		this.imgFileChoo = new JFileChooser();
+		this.imgFileChoo = new JFileChooser(this.getClass().getClassLoader().getResource("").getPath() + "/images");
 		this.imgFileChoo.setDialogTitle(PuzzleProperties
 				.getLocalized("loadingImageFile"));
 		this.imgFileChoo.setMultiSelectionEnabled(false);
