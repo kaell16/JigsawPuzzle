@@ -349,68 +349,8 @@ public class MultiPiece extends PuzzlePiece {
 
 				// test if we have the right edge:
 				// teste se temos a borda direita:
-				boolean normal = currentPoint.equals(nextEdgePts[0]);// normal
-																		// the
-																		// end
-																		// of
-																		// the
-																		// currentEdge
-																		// is
-																		// same
-																		// as
-																		// the
-																		// start
-																		// of
-																		// the
-																		// next
-																	 // normal
-																		// a
-																		// fim
-																		// de
-																		// a
-																		// currentEdge
-																		// é
-																		// mesmo
-																		// como
-																		// a
-																		// começar
-																		// de
-																		// a
-																		// Next
-				boolean mirrored = currentPoint.equals(nextEdgePts[1]);// not
-																		// normal
-																		// but
-																		// possible
-																		// the
-																		// end
-																		// of
-																		// the
-																		// current
-																		// is
-																		// the
-																		// end
-																		// of
-																		// the
-																		// next
-																		// ->
-																		// mirrored
-																	   // não
-																		// normal
-																		// mas
-																		// possível
-																		// a
-																		// fim
-																		// de
-																		// a
-																		// atual
-																		// é
-																		// a
-																		// fim
-																		// de
-																		// a
-																		// Next
-																		// ->
-																		// espelhado
+				boolean normal = currentPoint.equals(nextEdgePts[0]);
+				boolean mirrored = currentPoint.equals(nextEdgePts[1]);
 
 				if (normal ^ mirrored) { // XOR bitwise or logical has no
 											// difference in this context
