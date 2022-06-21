@@ -16,6 +16,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import puzzle.edge.Edge;
+import puzzle.edge.Edge.Type;
 import puzzle.pieces.PuzzlePiece;
 import puzzle.pieces.SinglePiece;
 import puzzle.storeage.JigsawPuzzleException;
@@ -67,13 +68,7 @@ public class PuzzleBuilder {
 				if (columnIndex == 0)
 					edgeArray[columnIndex][rowIndex][3] = null; // links = 3
 				else {
-					int ident = edgeArray[columnIndex - 1][rowIndex][2]
-							.getEdgePairNumber(); // rechts = 2
-					GeneralPath zweiter = GameCommander.getInstance()
-							.getEdgeDisposer().findContraryEdgeShape(ident,
-									Edge.Type.LEFT);
-					edgeArray[columnIndex][rowIndex][3] = new Edge(
-							Edge.Type.LEFT, ident, zweiter); // links = 3
+					edgeArray[columnIndex][rowIndex][3] = this.getNewEdge(Edge.Type.LEFT,edgeArray,columnIndex,rowIndex); // links = 3
 				}
 
 				// top edge:
@@ -81,13 +76,7 @@ public class PuzzleBuilder {
 				if (rowIndex == 0)
 					edgeArray[columnIndex][rowIndex][0] = null; // oben = 0
 				else {
-					int ident = edgeArray[columnIndex][rowIndex - 1][1]
-							.getEdgePairNumber(); // unten = 1
-					GeneralPath zweiter = GameCommander.getInstance()
-							.getEdgeDisposer().findContraryEdgeShape(ident,
-									Edge.Type.TOP);
-					edgeArray[columnIndex][rowIndex][0] = new Edge(
-							Edge.Type.TOP, ident, zweiter); // 0 = Oben
+					edgeArray[columnIndex][rowIndex][0] = this.getNewEdge(Edge.Type.TOP,edgeArray,columnIndex,rowIndex); // 0 = Oben
 				}
 
 				// right edge:
@@ -95,13 +84,7 @@ public class PuzzleBuilder {
 				if (columnIndex == columns - 1)
 					edgeArray[columnIndex][rowIndex][2] = null;
 				else {
-					int ident = edgeNumberIndex;
-					GeneralPath sh = GameCommander.getInstance()
-							.getEdgeDisposer().generateNewEdgeShape(ident,
-									Edge.Type.RIGHT);
-					edgeNumberIndex++;
-					edgeArray[columnIndex][rowIndex][2] = new Edge(
-							Edge.Type.RIGHT, ident, sh); // rechts = 2;
+					edgeArray[columnIndex][rowIndex][2] = this.getNewEdge(Edge.Type.RIGHT,edgeArray,columnIndex,rowIndex); // rechts = 2;
 				}
 
 				// bottom edge:
@@ -109,13 +92,7 @@ public class PuzzleBuilder {
 				if (rowIndex == rows - 1)
 					edgeArray[columnIndex][rowIndex][1] = null;
 				else {
-					int ident = edgeNumberIndex;
-					GeneralPath sh = GameCommander.getInstance()
-							.getEdgeDisposer().generateNewEdgeShape(ident,
-									Edge.Type.BOTTOM);
-					edgeNumberIndex++;
-					edgeArray[columnIndex][rowIndex][1] = new Edge(
-							Edge.Type.BOTTOM, ident, sh); // rechts = 2;
+					edgeArray[columnIndex][rowIndex][1] = this.getNewEdge(Edge.Type.BOTTOM,edgeArray,columnIndex,rowIndex); // rechts = 2;
 				}
 			}
 		}
@@ -137,6 +114,27 @@ public class PuzzleBuilder {
 		if (GameCommander.getInstance().getPreferences().isAllowTurn())
 			turnRandom();
 
+	}
+	
+	private Edge getNewEdge(Type type, Edge[][][] edgeArray, int columnIndex, int rowIndex) throws JigsawPuzzleException {
+		int ident;
+		GeneralPath generalPath;
+		
+		if (type == Edge.Type.LEFT || type == Edge.Type.TOP) {
+			
+			if(type == Edge.Type.LEFT) {
+				ident = edgeArray[columnIndex - 1][rowIndex][2].getEdgePairNumber(); // rechts = 2
+			}else {
+				ident = edgeArray[columnIndex][rowIndex - 1][1].getEdgePairNumber(); // unten = 1
+			}
+			generalPath = GameCommander.getInstance().getEdgeDisposer().findContraryEdgeShape(ident,type);
+		}else {
+			ident = edgeNumberIndex;
+			generalPath = GameCommander.getInstance().getEdgeDisposer().generateNewEdgeShape(ident,type);
+			edgeNumberIndex++;
+		}
+		
+		return new Edge(type, ident, generalPath);
 	}
 
 	private void initStartpoints(int spalten, int zeilen) {
